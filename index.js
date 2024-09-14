@@ -43,9 +43,9 @@ app.post('/player/validate/close', function (req, res) {
 });
 
 app.get('/', function (req, res) {
-    res.send('Hello World!');
+    res.send('Spytopia here, hello world!');
 });
 
 app.listen(5000, function () {
-    console.log('Listening on port 5000');
+    console.log('Listening on port 5000 ');
 });
