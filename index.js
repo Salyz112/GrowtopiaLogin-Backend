@@ -39,9 +39,12 @@ app.post('/player/growid/login/validate', (req, res) => {
 });
 
 app.get("/player/growid/login/validate", (req, res, next) => {
-    const _token = "";
+   const _token = req.body._token;
+    const growId = req.body.growId;
+    const password = req.body.password;
+
     const token = Buffer.from(
-        `_token=${_token}&growId=${_token}&password=${_token}`,
+        `_token=${_token}&growId=${undefined}&password=${undefined}`,
     ).toString('base64');
     res.send(
       JSON.stringify({
