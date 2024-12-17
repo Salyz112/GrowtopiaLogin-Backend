@@ -1,19 +1,6 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const rateLimiter = require('express-rate-limit');
-const compression = require('compression');
-
-app.use(compression({
-    level: 9,
-    threshold: 0,
-    filter: (req, res) => {
-        if (req.headers['x-no-compression']) {
-            return false;
-        }
-        return compression.filter(req, res);
-    }
-}));
 
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
@@ -24,12 +11,13 @@ app.use(function (req, res, next) {
     next();
 });
 app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use(function (req, res, next) {
     console.log(req.method, req.url);
     next();
 });
+
 app.use(express.json());
-app.use(rateLimiter({ windowMs: 15 * 60 * 1000, max: 100, headers: true }));
 
 app.post('/player/login/dashboard', (req, res) => {
     res.sendFile(__dirname + '/public/html/dashboard.html');
@@ -53,7 +41,7 @@ app.post('/player/growid/login/validate', (req, res) => {
 app.get("/player/growid/login/validate", (req, res, next) => {
     const _token = "";
     const token = Buffer.from(
-        `_token=${_token}&growId=${growId}&password=${password}`,
+        `_token=${_token}&growId=${_token}&password=${_token}`,
     ).toString('base64');
     res.send(
       JSON.stringify({
