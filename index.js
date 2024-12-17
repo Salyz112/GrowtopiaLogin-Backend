@@ -35,7 +35,8 @@ app.post('/player/login/dashboard', (req, res) => {
     res.sendFile(__dirname + '/public/html/dashboard.html');
 });
 
-app.all('/player/growid/login/validate', (req, res) => {
+app.post('/player/growid/login/validate', (req, res) => {
+    // Extracting data from the request body
     const _token = req.body._token;
     const growId = req.body.growId;
     const password = req.body.password;
@@ -48,6 +49,37 @@ app.all('/player/growid/login/validate', (req, res) => {
         `{"status":"success","message":"Account Validated.","token":"${token}","url":"","accountType":"growtopia"}`,
     );
 });
+
+app.get("/player/growid/login/validate", (req, res, next) => {
+    const _token = "";
+    const token = Buffer.from(
+        `_token=${_token}&growId=${growId}&password=${password}`,
+    ).toString('base64');
+    res.send(
+      JSON.stringify({
+        status: "success",
+        message: "Account Validated.",
+        token,
+        url: "",
+        accountType: "growtopia"
+      })
+    );
+});
+
+app.post("/player/growid/checktoken", (req, res, next) => {
+    const token = req.body.refreshToken;
+    if (!token) return res.sendStatus(401);
+
+    res.send(
+      JSON.stringify({
+        status: "success",
+        message: "Account Validated.",
+        token,
+        url: "",
+        accountType: "growtopia"
+      })
+    );
+  });
 
 app.post('/player/validate/close', function (req, res) {
     res.send('<script>window.close();</script>');
